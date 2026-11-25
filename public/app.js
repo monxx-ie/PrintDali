@@ -27,6 +27,17 @@ async function api(method, url, body, headers = {}) {
   return data;
 }
 const getOrder = code => orders.find(o => o.code === code);
+
+// How many orders are before this one in the same shop's line
+// (everything being printed now + waiting orders placed earlier).
+function aheadOf(o) {
+  return orders.filter(x => x.shop === o.shop && x.code !== o.code &&
+    (x.status === 'printing' || (x.status === 'waiting' && x.createdAt < o.createdAt))).length;
+}
+function lineText(o) {
+  const n = aheadOf(o);
+  return n === 0 ? "You're next in line!" : `${n} order${n > 1 ? 's' : ''} ahead of you`;
+}
 const delay = ms => new Promise(r => setTimeout(r, ms));
 
 // ---------- Helpers ----------
@@ -153,6 +164,7 @@ function renderStudentHome() {
           <div class="meta">
             <p class="code">#${o.code}</p>
             <p class="small muted">${esc(o.fileName)} · ${peso(o.total)}</p>
+            ${o.status === 'waiting' ? `<p class="small" style="font-weight:700">${lineText(o)}</p>` : ''}
           </div>
           ${pill(o.status)}
         </a>`).join('') : `<p class="empty">No orders yet. Tap "New print order" to start.</p>`}
@@ -340,6 +352,13 @@ function renderOrder(code) {
       <p>${s.note}</p>
       <p class="small"><strong>${esc(o.shop)}</strong></p>
     </section>
+    ${o.status === 'waiting' ? `
+    <section class="queue" aria-live="polite">
+      <p class="small muted">Your place in line</p>
+      <p class="queue-num">#${aheadOf(o) + 1}</p>
+      <p style="font-weight:700">${lineText(o)}</p>
+      <p class="small muted">This updates live. You'll get an alert when it's ready.</p>
+    </section>` : ''}
     <section class="card">
       <ol class="steps">
         ${steps.map((st, i) => `
