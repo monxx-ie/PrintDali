@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PrintDali</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#student" aria-label="PrintDali home">
+      <svg width="26" height="30" viewBox="0 0 40 46" aria-hidden="true"><path d="M4 4h22l10 10v28H4z" fill="#F5C842"/><path d="M26 4v10h10" fill="#E0B232"/><path d="M11 27l6 6 12-13" stroke="#1B2433" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>PrintDali</span>
+    </a>
+    <nav class="viewswitch" aria-label="Switch view">
+      <a href="#student" data-view="student">Student</a>
+      <a href="#shop" data-view="shop">Print shop</a>
+    </nav>
+  </header>
+
+  <main id="app"></main>
+
+  <div id="modal-root"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
